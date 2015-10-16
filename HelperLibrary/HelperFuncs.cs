@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * C# Helper Funcs Library
+ * Brandon McClure
+ * 10.16.2015
+ * 
+ * This library is used to assist with developing C# applications
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
