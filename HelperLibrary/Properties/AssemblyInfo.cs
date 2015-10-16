@@ -6,13 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HelperLibrary")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A dll used to assist with development of C# apps")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("
-			")]
+[assembly: AssemblyCompany("McClure Tech Productions")]
 [assembly: AssemblyProduct("HelperLibrary")]
-[assembly: AssemblyCopyright("Copyright © 
-			 2015")]
+[assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
