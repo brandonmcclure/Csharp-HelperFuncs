@@ -149,7 +149,7 @@ namespace HelperFuncs
         OleDbCommand Command;
         DataSet dataset;
 
-        OleDBDataAccess( string connString, string SQLQuery)
+        public OleDBDataAccess( string connString, string SQLQuery)
         {
             connectionString = connString;
             query = SQLQuery;
