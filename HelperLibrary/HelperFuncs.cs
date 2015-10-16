@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 
 namespace HelperFuncs
 {
-    class Logger
+    public class Logger
     {
         public static void WriteToLog(string input, string fileName = "\\Log.txt", bool append = true, Boolean TerminateLine = true)
         {
@@ -111,7 +111,7 @@ namespace HelperFuncs
             return output;
         }
     }
-    class SQLDataAccess
+    public class SQLDataAccess
     {
         public static void HandleConnection(SqlConnection oCN)
         {
@@ -132,7 +132,7 @@ namespace HelperFuncs
             }
         }
     }
-    class ExcelDataAccess
+    public class ExcelDataAccess
     {
         public static void HandleConnection(OleDbConnection oCN)
         {
@@ -154,7 +154,7 @@ namespace HelperFuncs
         }
 
     }
-    class TrackerItem
+    public class TrackerItem
     {
         public int ID;
         public string MasterfileINI;
@@ -177,7 +177,7 @@ namespace HelperFuncs
     /// Create a New INI file to store or load data
     /// Got this from http://www.codeproject.com/Articles/646296/A-Cross-platform-Csharp-Class-for-Using-INI-Files
     /// </summary>
-    internal class INIFile
+    public class INIFile
     {
 
         #region "Declarations"
@@ -257,7 +257,7 @@ namespace HelperFuncs
         }
 
         // *** Read file contents into local cache ***
-        internal void Refresh()
+        public void Refresh()
         {
             lock (m_Lock)
             {
@@ -327,7 +327,7 @@ namespace HelperFuncs
         }
 
         // *** Flush local cache content ***
-        internal void Flush()
+        public void Flush()
         {
             lock (m_Lock)
             {
@@ -502,7 +502,7 @@ namespace HelperFuncs
         }
 
         // *** Read a value from local cache ***
-        internal string GetValue(string SectionName, string Key, string DefaultValue)
+        public string GetValue(string SectionName, string Key, string DefaultValue)
         {
             // *** Lazy loading ***
             if (m_Lazy)
@@ -527,7 +527,7 @@ namespace HelperFuncs
         }
 
         // *** Insert or modify a value in local cache ***
-        internal void SetValue(string SectionName, string Key, string Value)
+        public void SetValue(string SectionName, string Key, string Value)
         {
             // *** Lazy loading ***
             if (m_Lazy)
@@ -607,7 +607,7 @@ namespace HelperFuncs
         }
 
         // *** Getters for various types ***
-        internal bool GetValue(string SectionName, string Key, bool DefaultValue)
+        public bool GetValue(string SectionName, string Key, bool DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, DefaultValue.ToString(System.Globalization.CultureInfo.InvariantCulture));
             int Value;
@@ -615,7 +615,7 @@ namespace HelperFuncs
             return DefaultValue;
         }
 
-        internal int GetValue(string SectionName, string Key, int DefaultValue)
+        public int GetValue(string SectionName, string Key, int DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, DefaultValue.ToString(CultureInfo.InvariantCulture));
             int Value;
@@ -623,7 +623,7 @@ namespace HelperFuncs
             return DefaultValue;
         }
 
-        internal long GetValue(string SectionName, string Key, long DefaultValue)
+        public long GetValue(string SectionName, string Key, long DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, DefaultValue.ToString(CultureInfo.InvariantCulture));
             long Value;
@@ -631,7 +631,7 @@ namespace HelperFuncs
             return DefaultValue;
         }
 
-        internal double GetValue(string SectionName, string Key, double DefaultValue)
+        public double GetValue(string SectionName, string Key, double DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, DefaultValue.ToString(CultureInfo.InvariantCulture));
             double Value;
@@ -639,7 +639,7 @@ namespace HelperFuncs
             return DefaultValue;
         }
 
-        internal byte[] GetValue(string SectionName, string Key, byte[] DefaultValue)
+        public byte[] GetValue(string SectionName, string Key, byte[] DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, EncodeByteArray(DefaultValue));
             try
@@ -652,7 +652,7 @@ namespace HelperFuncs
             }
         }
 
-        internal DateTime GetValue(string SectionName, string Key, DateTime DefaultValue)
+        public DateTime GetValue(string SectionName, string Key, DateTime DefaultValue)
         {
             string StringValue = GetValue(SectionName, Key, DefaultValue.ToString(CultureInfo.InvariantCulture));
             DateTime Value;
@@ -661,32 +661,32 @@ namespace HelperFuncs
         }
 
         // *** Setters for various types ***
-        internal void SetValue(string SectionName, string Key, bool Value)
+        public void SetValue(string SectionName, string Key, bool Value)
         {
             SetValue(SectionName, Key, (Value) ? ("1") : ("0"));
         }
 
-        internal void SetValue(string SectionName, string Key, int Value)
+        public void SetValue(string SectionName, string Key, int Value)
         {
             SetValue(SectionName, Key, Value.ToString(CultureInfo.InvariantCulture));
         }
 
-        internal void SetValue(string SectionName, string Key, long Value)
+        public void SetValue(string SectionName, string Key, long Value)
         {
             SetValue(SectionName, Key, Value.ToString(CultureInfo.InvariantCulture));
         }
 
-        internal void SetValue(string SectionName, string Key, double Value)
+        public void SetValue(string SectionName, string Key, double Value)
         {
             SetValue(SectionName, Key, Value.ToString(CultureInfo.InvariantCulture));
         }
 
-        internal void SetValue(string SectionName, string Key, byte[] Value)
+        public void SetValue(string SectionName, string Key, byte[] Value)
         {
             SetValue(SectionName, Key, EncodeByteArray(Value));
         }
 
-        internal void SetValue(string SectionName, string Key, DateTime Value)
+        public void SetValue(string SectionName, string Key, DateTime Value)
         {
             SetValue(SectionName, Key, Value.ToString(CultureInfo.InvariantCulture));
         }
