@@ -140,8 +140,40 @@ namespace HelperFuncs
             }
         }
     }
-    public class ExcelDataAccess
+    public class OleDBDataAccess
     {
+        private string connectionString;
+        private string query;
+        OleDbConnection Connection;
+        OleDbDataAdapter Adapter = new OleDbDataAdapter();
+        OleDbCommand Command;
+        DataSet dataset;
+
+        OleDBDataAccess( string connString, string SQLQuery)
+        {
+            connectionString = connString;
+            query = SQLQuery;
+
+            InitDataSet();
+        }
+
+        private void InitDataSet()
+        {
+            Connection.ConnectionString = connectionString;
+            Adapter.SelectCommand.CommandText = query;
+            Adapter.SelectCommand.Connection = Connection;
+        }
+
+        public void fillDataSet ()
+        {
+            Adapter.Fill(dataset);
+        }
+
+        public DataSet GetDataSet()
+        {
+            return dataset;
+        }
+
         public static void HandleConnection(OleDbConnection oCN)
         {
             switch (oCN.State)
