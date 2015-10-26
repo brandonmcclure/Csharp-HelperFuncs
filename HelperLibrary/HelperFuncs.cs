@@ -144,9 +144,9 @@ namespace HelperFuncs
     {
         private string connectionString;
         private string query;
-        OleDbConnection Connection;
+        OleDbConnection Connection = new OleDbConnection();
         OleDbDataAdapter Adapter = new OleDbDataAdapter();
-        OleDbCommand Command;
+        OleDbCommand Command = new OleDbCommand();
         DataSet dataset;
 
         public OleDBDataAccess( string connString, string SQLQuery)
@@ -159,6 +159,7 @@ namespace HelperFuncs
 
         private void InitDataSet()
         {
+            int x = 0;
             Connection.ConnectionString = connectionString;
             Adapter.SelectCommand.CommandText = query;
             Adapter.SelectCommand.Connection = Connection;
