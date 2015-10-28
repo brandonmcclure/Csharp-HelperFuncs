@@ -119,6 +119,7 @@ namespace HelperFuncs
             return output;
         }
     }
+
     public class SQLDataAccess
     {
         public static void HandleConnection(SqlConnection oCN)
@@ -169,6 +170,11 @@ namespace HelperFuncs
             try
             {
                 HandleConnection();
+
+                if (Connection.State == System.Data.ConnectionState.Closed)
+                    Logger.WriteToLog("Connection is closed");
+                else
+                    Logger.WriteToLog("Connection is Open");
                 Reader = Command.ExecuteReader();
             }
             catch (Exception ex)
@@ -194,6 +200,24 @@ namespace HelperFuncs
                 default:
                     Connection.Close();
                     Connection.Open();
+                    break;
+            }
+        }
+        public static void HandleConnection( OleDbConnection oleCon)
+        {
+            switch (oleCon.State)
+            {
+                case System.Data.ConnectionState.Open:
+                    //Close them reopen
+                    oleCon.Close();
+                    oleCon.Open();
+                    break;
+                case System.Data.ConnectionState.Closed:
+                    oleCon.Open();
+                    break;
+                default:
+                    oleCon.Close();
+                    oleCon.Open();
                     break;
             }
         }
