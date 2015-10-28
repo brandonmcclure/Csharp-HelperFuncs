@@ -140,78 +140,73 @@ namespace HelperFuncs
             }
         }
     }
-    public class OleDBDataAccess
+    public class OleDBDataAccess : IDisposable
     {
-        private string connectionString;
-        private string query;
-        OleDbConnection Connection = new OleDbConnection();
-        OleDbDataAdapter Adapter = new OleDbDataAdapter();
-        OleDbCommand Command = new OleDbCommand();
-        DataSet dataset;
+        private bool disposed;
+        private OleDbConnection Connection = new OleDbConnection();
+        private OleDbDataReader Reader = null;
+        private OleDbCommand Command = new OleDbCommand();
 
         public OleDBDataAccess( string connString, string SQLQuery)
         {
-            connectionString = connString;
-            query = SQLQuery;
+            Connection.ConnectionString = connString;
 
-            InitDataSet();
+            try
+            {
+                HandleConnection();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteToLog("Error creating the connection. Perhaps the connection string was not correct?, the error recieved is: " + ex.Message);
+                throw new ArgumentException("Connection not initialized", ex);
+            }
+            Command.Connection = Connection;
+            Command.CommandText = SQLQuery; 
         }
 
-        private void InitDataSet()
+        public OleDbDataReader ExecuteReader()
         {
-            int x = 0;
-            Connection.ConnectionString = connectionString;
-            Adapter.SelectCommand.CommandText = query;
-            Adapter.SelectCommand.Connection = Connection;
+            try
+            {
+                HandleConnection();
+                Reader = Command.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteToLog("Error when executing the reader, the error recieved is: " + ex.Message);
+            }
+            
+            return Reader;
         }
 
-        public void fillDataSet ()
+        private void HandleConnection()
         {
-            Adapter.Fill(dataset);
-        }
-
-        public DataSet GetDataSet()
-        {
-            return dataset;
-        }
-
-        public static void HandleConnection(OleDbConnection oCN)
-        {
-            switch (oCN.State)
+            switch (Connection.State)
             {
                 case System.Data.ConnectionState.Open:
                     //Close them reopen
-                    oCN.Close();
-                    oCN.Open();
+                    Connection.Close();
+                    Connection.Open();
                     break;
                 case System.Data.ConnectionState.Closed:
-                    oCN.Open();
+                    Connection.Open();
                     break;
                 default:
-                    oCN.Close();
-                    oCN.Open();
+                    Connection.Close();
+                    Connection.Open();
                     break;
             }
         }
 
-    }
-    public class TrackerItem
-    {
-        public int ID;
-        public string MasterfileINI;
-        public string RecordID;
-        public string CID;
-        public string RecordName;
-        public string BuildTypeValue;
-        public string StatusPOCTST;
-        public string StatusTSTMST;
-        public string StatusTSTPRD;
-        public string Comment;
-        public string Items;
-        public string Owner;
-        public string FileLastCreated;
-        public string INInItem;
-        public string INInIntemnOwner;
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                disposed = true;
+                Connection.Dispose();
+            }
+        }
+
     }
 
     /// <summary>
