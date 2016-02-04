@@ -8,13 +8,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;                //Used to get the current directory
 using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
 using System.Data.OleDb;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -23,7 +19,36 @@ namespace HelperFuncs
 {
     public class Logger
     {
-        public static void WriteToLog(string input, string fileName = "\\Log.txt", bool append = true, Boolean TerminateLine = true)
+        private string filename;
+        private bool appendfile;
+
+        public Logger(string inFileName = "\\App.log", bool inAppendFlag = true)
+        {
+            appendfile = inAppendFlag;
+            try
+            {
+                string temp = inFileName.Left(2);
+                if (temp.Left(1) == "\\" && temp.Left(2) != "\\\\")
+                {
+                    filename = Directory.GetCurrentDirectory() + inFileName;
+                }
+                else
+                    filename = inFileName;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Setting the FileName for the Logger object");
+                Console.WriteLine("Attempting to dump data to application directory");
+                Console.WriteLine("Error Message: " + ex);
+
+                using (System.IO.StreamWriter errFile = new System.IO.StreamWriter(Directory.GetCurrentDirectory() + "\\Dump", true))
+                {
+                    errFile.Write(ex);
+                }
+            }
+        }
+
+        public static void WriteMessage(string input, string fileName = "\\App.log", bool append = true, bool TerminateLine = true)
         {
             try
             {
@@ -58,6 +83,38 @@ namespace HelperFuncs
                 Console.WriteLine("Error Message: " + ex);
 
                 using (System.IO.StreamWriter errFile = new System.IO.StreamWriter(Directory.GetCurrentDirectory() + "\\Dump", append))
+                {
+                    errFile.Write(ex);
+                }
+            }
+
+        }
+        public void WriteToTxtFile(string input, bool TerminateLine = true)
+        {
+            try
+            {
+                System.IO.FileInfo fileI = new System.IO.FileInfo(filename);
+                fileI.Directory.Create(); // If the directory already exists, this method does nothing.
+
+                //Using keyword will clean this up after it has completed
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(filename, appendfile))
+                {
+
+                    if (TerminateLine == true)
+                        file.WriteLineAsync(input);			//Write string and enter newline
+                    else
+                        file.WriteAsync(input);
+                }
+
+                Console.WriteLine(input);				//Write to console as well
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error with the WriteToLog function!");
+                Console.WriteLine("Attempting to dump data to application directory");
+                Console.WriteLine("Error Message: " + ex);
+
+                using (System.IO.StreamWriter errFile = new System.IO.StreamWriter(Directory.GetCurrentDirectory() + "\\Dump", true))
                 {
                     errFile.Write(ex);
                 }
